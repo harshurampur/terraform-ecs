@@ -1,3 +1,7 @@
+data "aws_kms_alias" "param_store_key" {
+  name = "${var.ssm_decrypt_key}"
+}
+
 data "aws_iam_policy_document" "container_perms" {
   statement {
     actions = [
@@ -26,7 +30,7 @@ data "aws_iam_policy_document" "container_perms" {
     ]
 
     resources = [
-      "arn:aws:kms:${var.aws_region}:${var.account_id}:key/${var.ssm_decrypt_key}",
+      "arn:aws:kms:${var.aws_region}:${var.account_id}:key/${data.aws_kms_alias.param_store_key.target_key_id}",
     ]
   }
 }
