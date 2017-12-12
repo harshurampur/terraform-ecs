@@ -117,7 +117,8 @@ module "ec2_instances" {
 module "ecs_policy" {
   source = "modules/ecs_policy"
 
-  task_role_name = "${var.service_name}-role"
+  ssm_decrypt_key = "${var.aws_ssm_decrypt_key}"
+  task_role_name  = "${var.service_name}-role"
 
   account_id         = "${data.aws_caller_identity.current.account_id}"
   aws_region         = "${var.aws_region}"
@@ -143,24 +144,4 @@ module "load_balancer" {
   owner     = "${var.owner}"
   cluster   = "${var.cluster}"
   workspace = "${var.workspace}"
-}
-
-resource "null_resource" "ecs_service" {
-  # automatically set off a deploy
-  # after this has run once, you can deploy manually by running
-  # ecs-cli compose --project-name datacube service up
-  triggers {
-    project-name           = "${var.service_name}"
-    task-role-arn          = "${module.ecs_policy.role_arn}"
-    cluster                = "${var.cluster}"
-    target-group-arn       = "${module.load_balancer.alb_target_group}"
-    role                   = "/ecs/${module.public.ecs_lb_role}"
-    container-name         = "${var.service_entrypoint}"
-    compose-file           = "${md5(file(var.service_compose))}"
-    deployment-max-percent = "${var.max_percent}"
-    timeout                = "${var.timeout}"
-
-    #enable for debugging
-    #timestamp = "${timestamp()}"
-  }
 }

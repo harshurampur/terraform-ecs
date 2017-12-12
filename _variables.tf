@@ -129,12 +129,12 @@ variable db_admin_password {
 }
 
 variable "db_dns_name" {
-  default = "database"
+  default     = "database"
   description = "Database url prefix"
 }
 
 variable "db_zone" {
-  default = "local"
+  default     = "local"
   description = "Route53 Zone suffix"
 }
 
@@ -192,30 +192,14 @@ variable "container_port" {
 }
 
 variable "service_name" {
-  default = "datacube"
-}
-
-variable "service_entrypoint" {
-  default = "web"
-}
-
-variable "service_compose" {
-  default = "docker-compose.yml"
-}
-
-variable "max_percent" {
-  default     = "600"
-  description = "Max percentage of the desired count"
-}
-
-variable "timeout" {
-  default     = "3"
-  description = "time in minutes to wait for a service to become healthy"
+  default = "default"
 }
 
 variable "health_check_path" {
-  default = "/"
+  default     = "/"
   description = "path for load balancer health check"
 }
 
-
+variable "aws_ssm_decrypt_key" {
+  default = "aws/ssm"
+}
