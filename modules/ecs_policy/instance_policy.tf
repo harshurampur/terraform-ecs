@@ -11,7 +11,18 @@ data "aws_iam_policy_document" "container_perms" {
 
   statement {
     actions = [
-      "kms:*",
+      "ssm:DescribeParameters",
+    ]
+
+    resources = [
+      "arn:aws:ssm:${var.aws_region}:${var.account_id}:*",
+    ]
+  }
+
+  statement {
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
     ]
 
     resources = [
