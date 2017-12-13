@@ -13,3 +13,7 @@ output "alb_dns_name" {
 output "alb_name" {
   value = "${var.alb_name}"
 }
+
+output "alb_arn" {
+  value = "${aws_alb.alb.arn}"
+}

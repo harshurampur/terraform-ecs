@@ -13,3 +13,7 @@ output "target_group_arn" {
 output "lb_role" {
   value = "/ecs/${module.public.ecs_lb_role}"
 }
+
+output "lb_arn" {
+  value = "${module.load_balancer.alb_arn}"
+}
