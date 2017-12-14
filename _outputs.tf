@@ -2,6 +2,10 @@ output "alb_dns_name" {
   value = "${module.load_balancer.alb_dns_name}"
 }
 
+output "alb_dns_zone" {
+  value = "${module.load_balancer.zone_id}"
+}
+
 output "task_role_arn" {
   value = "${module.ecs_policy.role_arn}"
 }
