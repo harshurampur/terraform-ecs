@@ -14,28 +14,6 @@ resource "aws_security_group" "instance" {
   description = "Used in ${var.workspace}"
   vpc_id      = "${var.vpc_id}"
 
-  ingress {
-    from_port       = 22
-    to_port         = 22
-    protocol        = "tcp"
-    security_groups = ["${var.jump_ssh_sg_id}"]
-  }
-
-  # ECS dynamically assigns ports in the ephemeral range
-  ingress {
-    from_port       = 32768
-    to_port         = 65535
-    protocol        = "TCP"
-    security_groups = ["${var.alb_security_group_id}"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   tags {
     Name          = "ecs_instance_sg"
     Workspace     = "${var.workspace}"
@@ -44,6 +22,24 @@ resource "aws_security_group" "instance" {
     Owner         = "${var.owner}"
     Created_by    = "terraform"
   }
+}
+
+resource "aws_security_group_rule" "http_from_anywhere" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "TCP"
+  security_groups   = ["${var.allow_cidr_block}"]
+  security_group_id = "${aws_security_group.alb.id}"
+}
+
+resource "aws_security_group_rule" "http_from_anywhere" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = "${aws_security_group.alb.id}"
 }
 
 # Default disk size for Docker is 22 gig, see http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html
@@ -130,6 +126,6 @@ data "template_file" "user_data" {
     env_name          = "${var.workspace}"
     custom_userdata   = "${var.custom_userdata}"
     cloudwatch_prefix = "${var.cloudwatch_prefix}"
-    efs_id = "${aws_efs_file_system.efs.id}"
+    efs_id            = "${aws_efs_file_system.efs.id}"
   }
 }

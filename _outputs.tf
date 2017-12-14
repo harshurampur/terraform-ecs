@@ -25,3 +25,7 @@ output "lb_arn" {
 output "lb_sg_id" {
   value = "${module.load_balancer.alb_sec_group_id}"
 }
+
+output "ec2_sg_id" {
+  value = "${module.ec2_instances.ecs_instance_security_group_id}"
+}

@@ -109,10 +109,6 @@ variable "container_port" {
   description = "The port that the ecs communicates with the alb"
 }
 
-variable "alb_security_group_id" {
-  description = "The security group of the alb"
-}
-
 #--------------------------------------------------------------
 # Tags
 #--------------------------------------------------------------

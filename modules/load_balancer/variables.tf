@@ -46,3 +46,7 @@ variable "allow_cidr_block" {
   default     = "0.0.0.0/0"
   description = "Specify cidr block that is allowed to access the LoadBalancer"
 }
+
+variable "ec2_security_group" {
+  description = "The Security groups for our ec2 instances"
+}

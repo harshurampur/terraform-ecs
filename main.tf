@@ -96,14 +96,13 @@ module "ec2_instances" {
   aws_ami           = "${var.ecs_aws_ami}"
 
   # Networking
-  vpc_id                = "${module.vpc.id}"
-  key_name              = "${var.key_name}"
-  jump_ssh_sg_id        = "${module.public.jump_ssh_sg_id}"
-  nat_ids               = "${module.public.nat_ids}"
-  availability_zones    = "${var.availability_zones}"
-  private_subnet_cidrs  = "${var.private_subnet_cidrs}"
-  container_port        = "${var.container_port}"
-  alb_security_group_id = "${module.load_balancer.alb_security_group_id}"
+  vpc_id               = "${module.vpc.id}"
+  key_name             = "${var.key_name}"
+  jump_ssh_sg_id       = "${module.public.jump_ssh_sg_id}"
+  nat_ids              = "${module.public.nat_ids}"
+  availability_zones   = "${var.availability_zones}"
+  private_subnet_cidrs = "${var.private_subnet_cidrs}"
+  container_port       = "${var.container_port}"
 
   # Force dependency wait
   depends_id = "${module.public.nat_complete}"
@@ -133,12 +132,13 @@ module "ecs_policy" {
 module "load_balancer" {
   source = "modules/load_balancer"
 
-  container_port    = "${var.container_port}"
-  service_name      = "${var.service_name}"
-  alb_name          = "${var.cluster}-${var.workspace}"
-  vpc_id            = "${module.vpc.id}"
-  public_subnet_ids = "${module.public.public_subnet_ids}"
-  health_check_path = "${var.health_check_path}"
+  container_port     = "${var.container_port}"
+  service_name       = "${var.service_name}"
+  alb_name           = "${var.cluster}-${var.workspace}"
+  vpc_id             = "${module.vpc.id}"
+  public_subnet_ids  = "${module.public.public_subnet_ids}"
+  health_check_path  = "${var.health_check_path}"
+  ec2_security_group = "${module.ec2_instances.ecs_instance_security_group_id}"
 
   # Tags
   owner     = "${var.owner}"
