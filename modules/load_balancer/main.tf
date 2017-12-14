@@ -70,7 +70,7 @@ resource "aws_security_group_rule" "http_from_anywhere" {
   from_port         = 80
   to_port           = 80
   protocol          = "TCP"
-  cidr_blocks       = "${var.allow_cidr_block}"
+  cidr_blocks       = ["${var.allow_cidr_block}"]
   security_group_id = "${aws_security_group.alb.id}"
 }
 
@@ -91,6 +91,6 @@ resource "aws_security_group_rule" "container_from_alb" {
   from_port                = 32768
   to_port                  = 65535
   protocol                 = "TCP"
-  source_security_group_id = ["${aws_security_group.alb.id}"]
+  source_security_group_id = "${aws_security_group.alb.id}"
   security_group_id        = "${var.ec2_security_group}"
 }
