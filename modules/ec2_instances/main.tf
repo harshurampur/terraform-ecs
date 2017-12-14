@@ -25,12 +25,12 @@ resource "aws_security_group" "instance" {
 }
 
 resource "aws_security_group_rule" "ssh_from_jumpbox" {
-  type              = "ingress"
-  from_port         = 22
-  to_port           = 22
-  protocol          = "TCP"
-  security_groups   = ["${var.jump_ssh_sg_id}"]
-  security_group_id = "${aws_security_group.instance.id}"
+  type                     = "ingress"
+  from_port                = 22
+  to_port                  = 22
+  protocol                 = "TCP"
+  source_security_group_id = ["${var.jump_ssh_sg_id}"]
+  security_group_id        = "${aws_security_group.instance.id}"
 }
 
 resource "aws_security_group_rule" "egress_to_anywhere" {
