@@ -21,3 +21,7 @@ output "alb_arn" {
 output "zone_id" {
   value = "${aws_alb.alb.zone_id}"
 }
+
+output "alb_sec_group_id" {
+  value = "${aws_security_group.alb.id}"
+}
