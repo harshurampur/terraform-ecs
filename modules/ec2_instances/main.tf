@@ -24,7 +24,7 @@ resource "aws_security_group" "instance" {
   }
 }
 
-resource "aws_security_group_rule" "http_from_anywhere" {
+resource "aws_security_group_rule" "ssh_from_anywhere" {
   type              = "ingress"
   from_port         = 22
   to_port           = 22
@@ -33,7 +33,7 @@ resource "aws_security_group_rule" "http_from_anywhere" {
   security_group_id = "${aws_security_group.alb.id}"
 }
 
-resource "aws_security_group_rule" "http_from_anywhere" {
+resource "aws_security_group_rule" "egress_to_anywhere" {
   type              = "egress"
   from_port         = 0
   to_port           = 0

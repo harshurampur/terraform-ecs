@@ -79,7 +79,7 @@ resource "aws_security_group_rule" "outbound_internet_access" {
 }
 
 # ECS dynamically assigns ports in the ephemeral range
-resource "aws_security_group_rule" "outbound_internet_access" {
+resource "aws_security_group_rule" "container_from_alb" {
   type              = "ingress"
   from_port         = 32768
   to_port           = 65535

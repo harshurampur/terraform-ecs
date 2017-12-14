@@ -203,3 +203,7 @@ variable "health_check_path" {
 variable "aws_ssm_decrypt_key" {
   default = "aws/ssm"
 }
+
+variable "use_default_load_balancer" {
+  default = true
+}
