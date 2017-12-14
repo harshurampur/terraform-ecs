@@ -1,6 +1,7 @@
 # Default ALB implementation that can be used connect ECS instances to it
 
 resource "aws_alb_target_group" "default" {
+  count                = "${var.create_lb}"
   name                 = "${var.alb_name}"
   port                 = "${var.container_port}"
   protocol             = "HTTP"
@@ -23,6 +24,7 @@ resource "aws_alb_target_group" "default" {
 }
 
 resource "aws_alb" "alb" {
+  count           = "${var.create_lb}"
   name            = "${var.alb_name}"
   subnets         = ["${var.public_subnet_ids}"]
   security_groups = ["${aws_security_group.alb.id}"]
@@ -37,6 +39,7 @@ resource "aws_alb" "alb" {
 }
 
 resource "aws_alb_listener" "http" {
+  count             = "${var.create_lb}"
   load_balancer_arn = "${aws_alb.alb.id}"
   port              = 80
   protocol          = "HTTP"
@@ -48,6 +51,7 @@ resource "aws_alb_listener" "http" {
 }
 
 resource "aws_security_group" "alb" {
+  count  = "${var.create_lb}"
   name   = "${var.alb_name}_alb"
   vpc_id = "${var.vpc_id}"
 
@@ -61,6 +65,7 @@ resource "aws_security_group" "alb" {
 }
 
 resource "aws_security_group_rule" "http_from_anywhere" {
+  count             = "${var.create_lb}"
   type              = "ingress"
   from_port         = 80
   to_port           = 80
@@ -70,6 +75,7 @@ resource "aws_security_group_rule" "http_from_anywhere" {
 }
 
 resource "aws_security_group_rule" "outbound_internet_access" {
+  count             = "${var.create_lb}"
   type              = "egress"
   from_port         = 0
   to_port           = 0
@@ -80,6 +86,7 @@ resource "aws_security_group_rule" "outbound_internet_access" {
 
 # ECS dynamically assigns ports in the ephemeral range
 resource "aws_security_group_rule" "container_from_alb" {
+  count             = "${var.create_lb}"
   type              = "ingress"
   from_port         = 32768
   to_port           = 65535

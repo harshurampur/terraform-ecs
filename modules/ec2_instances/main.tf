@@ -24,13 +24,13 @@ resource "aws_security_group" "instance" {
   }
 }
 
-resource "aws_security_group_rule" "ssh_from_anywhere" {
+resource "aws_security_group_rule" "ssh_from_jumpbox" {
   type              = "ingress"
   from_port         = 22
   to_port           = 22
   protocol          = "TCP"
-  security_groups   = ["${var.allow_cidr_block}"]
-  security_group_id = "${aws_security_group.alb.id}"
+  security_groups   = ["${var.jump_ssh_sg_id}"]
+  security_group_id = "${aws_security_group.instance.id}"
 }
 
 resource "aws_security_group_rule" "egress_to_anywhere" {
@@ -39,7 +39,7 @@ resource "aws_security_group_rule" "egress_to_anywhere" {
   to_port           = 0
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.alb.id}"
+  security_group_id = "${aws_security_group.instance.id}"
 }
 
 # Default disk size for Docker is 22 gig, see http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html

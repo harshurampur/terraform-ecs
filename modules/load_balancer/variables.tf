@@ -50,3 +50,8 @@ variable "allow_cidr_block" {
 variable "ec2_security_group" {
   description = "The Security groups for our ec2 instances"
 }
+
+variable "create_lb" {
+  default     = "true"
+  description = "Setting to false will disable the lb"
+}

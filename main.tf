@@ -131,8 +131,8 @@ module "ecs_policy" {
 
 module "load_balancer" {
   source = "modules/load_balancer"
-  count  = "${var.use_default_load_balancer}"
 
+  create_lb          = "${var.use_default_load_balancer}"
   container_port     = "${var.container_port}"
   service_name       = "${var.service_name}"
   alb_name           = "${var.cluster}-${var.workspace}"
