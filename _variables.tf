@@ -69,6 +69,10 @@ variable "instance_group" {
   default     = "default"
 }
 
+variable "alb_security_group_id" {
+  type = "list"
+}
+
 #--------------------------------------------------------------
 # EC2 Logging
 #--------------------------------------------------------------
@@ -228,3 +232,7 @@ variable "health_check_path" {
 }
 
 
+variable "lb_count" {
+  default = 1
+  description = "number of load balancers"
+}
